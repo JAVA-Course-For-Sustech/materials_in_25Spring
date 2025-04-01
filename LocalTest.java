@@ -1,5 +1,5 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -17,18 +17,16 @@ public class LocalTest {
         Class<?> groupClazz = Group.class;
 
         // Test Student fields
-        assertAll("Student fields",
-                () -> assertField(studentClazz, "studentNumber", String.class),
-                () -> assertField(studentClazz, "lab", char.class),
-                () -> assertField(studentClazz, "grade", int.class)
-        );
+        assertField(studentClazz, "studentNumber", String.class);
+        assertField(studentClazz, "lab", char.class);
+        assertField(studentClazz, "grade", int.class);
+
 
         // Test Group fields
-        assertAll("Group Fields",
-                () -> assertField(groupClazz, "student1", Student.class),
-                () -> assertField(groupClazz, "student2", Student.class),
-                () -> assertField(groupClazz, "lab", char.class)
-        );
+        assertField(groupClazz, "student1", Student.class);
+        assertField(groupClazz, "student2", Student.class);
+        assertField(groupClazz, "lab", char.class);
+
 
         // Test Student and Group constructors
         assertConstructor(Student.class, String.class, char.class, int.class);
@@ -177,18 +175,18 @@ public class LocalTest {
         Arrays.stream(actual).forEach(element -> assertNotNull(element, "Array has null value"));
         assertEquals(expected.length, actual.length, "Array length doesn't match");
         if (!Arrays.asList(actual).containsAll(Arrays.asList(expected))) {
-            throw new AssertionFailedError(
-                    "Array is not as expected (omit order)",
+            Assertions.fail(String.format(
+                    "Array elements mismatch (order ignored)\nExpected: %s\nActual: %s",
                     Arrays.toString(expected),
                     Arrays.toString(actual)
-            );
+            ));
         }
         if (!Arrays.asList(expected).containsAll(Arrays.asList(actual))) {
-            throw new AssertionFailedError(
-                    "Array is not as expected (omit order)",
+            Assertions.fail(String.format(
+                    "Array elements mismatch (order ignored)\nExpected: %s\nActual: %s",
                     Arrays.toString(expected),
                     Arrays.toString(actual)
-            );
+            ));
         }
     }
 
